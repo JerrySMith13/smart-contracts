@@ -1,0 +1,14 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+# Solidity is pinned by `pragma solidity 0.8.38` in Counter.sol. Forge
+# downloads that compiler. Do not also set `solc` here: Foundry 1.9 treats a
+# Vyper `# pragma version` as a solc requirement when `solc` is pinned, and
+# then refuses to compile Counter.vy.
+# Vyper 0.4.3 defaults to Prague. Keep the test EVM on the same revision.
+evm_version = "prague"
+optimizer = false
+
+# Foundry does not take a Vyper version here. It runs the `vyper` binary on
+# PATH. Pin that binary with ethereum/requirements.txt (vyper==0.4.3).

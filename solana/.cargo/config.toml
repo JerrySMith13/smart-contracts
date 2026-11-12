@@ -1,0 +1,6 @@
+# `cargo build-sbf` writes counter.so to target/deploy and, while it runs,
+# points SBF_OUT_DIR there. A later `cargo test` does not set that variable.
+# Mollusk only searches SBF_OUT_DIR when it is set, so pin it for every Cargo
+# command in this crate. `relative` makes the path absolute from this folder.
+[env]
+SBF_OUT_DIR = { value = "target/deploy", relative = true }

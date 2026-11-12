@@ -1,0 +1,8 @@
+# Forge compiler output
+out/
+cache/
+
+# Deployment transcripts
+broadcast/
+
+.env

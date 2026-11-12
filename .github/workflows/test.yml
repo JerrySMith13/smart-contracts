@@ -1,0 +1,48 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ethereum:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Foundry
+        run: |
+          curl -fsSL https://foundry.paradigm.xyz | bash
+          export PATH="$PATH:$HOME/.foundry/bin"
+          foundryup
+          echo "$HOME/.foundry/bin" >> "$GITHUB_PATH"
+
+      - name: Install Vyper 0.4.3
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install -r ethereum/requirements.txt
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: forge test
+        working-directory: ethereum
+        run: forge test
+
+  solana:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Solana CLI
+        run: |
+          sh -c "$(curl -sSfL https://release.anza.xyz/stable/install)"
+          echo "$HOME/.local/share/solana/install/active_release/bin" >> "$GITHUB_PATH"
+
+      - name: cargo build-sbf
+        working-directory: solana
+        run: cargo build-sbf
+
+      - name: cargo test
+        working-directory: solana
+        run: cargo test
